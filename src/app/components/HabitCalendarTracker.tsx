@@ -1,26 +1,32 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { Dumbbell, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
-export default function GymCalendarTracker() {
+interface HabitCalendarTrackerProps {
+  habitName: string;
+  habitKey: string;  // Clave única para este hábito
+  icon: React.ReactNode; // El ícono del hábito
+}
+
+export default function HabitCalendarTracker({ habitName, habitKey, icon }: HabitCalendarTrackerProps) {
   const [completedDays, setCompletedDays] = useState<{ [key: string]: number[] }>({});
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  // Cargar días completados desde localStorage
+  // Cargar días completados desde localStorage para este hábito en particular
   useEffect(() => {
-    const storedDays = localStorage.getItem('completedDays');
+    const storedDays = localStorage.getItem(`completedDays-${habitKey}`);
     if (storedDays) {
       setCompletedDays(JSON.parse(storedDays));
     }
-  }, []);
+  }, [habitKey]);
 
-  // Guardar días completados en localStorage
+  // Guardar días completados en localStorage para este hábito
   useEffect(() => {
-    localStorage.setItem('completedDays', JSON.stringify(completedDays));
-  }, [completedDays]);
+    localStorage.setItem(`completedDays-${habitKey}`, JSON.stringify(completedDays));
+  }, [completedDays, habitKey]);
 
   const handleCheck = (day: number) => {
     const key = `${currentMonth.getFullYear()}-${currentMonth.getMonth() + 1}`;
@@ -34,7 +40,6 @@ export default function GymCalendarTracker() {
     });
   };
 
-  // Obtener los días de un mes específico
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -44,12 +49,10 @@ export default function GymCalendarTracker() {
 
   const days = getDaysInMonth(currentMonth);
 
-  // Cambiar al mes anterior
   const prevMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
   };
 
-  // Cambiar al siguiente mes
   const nextMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
   };
@@ -57,14 +60,14 @@ export default function GymCalendarTracker() {
   const key = `${currentMonth.getFullYear()}-${currentMonth.getMonth() + 1}`;
 
   return (
-    <div className="bg-gray-900 p-6 rounded-3xl max-w-2xl mx-auto">
+    <div className="bg-gray-900 p-6 rounded-3xl max-w-xl mx-auto mb-8">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center space-x-3">
           <div className="bg-gray-800 p-2 rounded-2xl">
-            <Dumbbell className="text-white w-6 h-6" />
+            {icon}
           </div>
           <div>
-            <h2 className="text-white text-lg font-semibold">Ir al gym</h2>
+            <h2 className="text-white text-lg font-semibold">{habitName}</h2>
             <p className="text-gray-400 text-sm">
               {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
             </p>
@@ -99,5 +102,5 @@ export default function GymCalendarTracker() {
         ))}
       </div>
     </div>
-  );
+  );  
 }

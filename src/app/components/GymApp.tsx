@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import GymHabitTracker from './GymHabitTracker';
-import GymCalendarTracker from './GymCalendarTracker';
+import HabitCalendarTracker from './HabitCalendarTracker';
 
 export default function GymApp() {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -10,8 +10,8 @@ export default function GymApp() {
   return (
     <div>
       {showCalendar ? (
-        // Mostrar GymCalendarTracker si showCalendar es true
-        <GymCalendarTracker />
+        // Mostrar CalendarTracker si showCalendar es true
+        <HabitCalendarTracker habitName={''} habitKey={''} icon={undefined} />
       ) : (
         // Mostrar GymHabitTracker si showCalendar es false
         <GymHabitTracker onShowCalendar={() => setShowCalendar(true)} />
