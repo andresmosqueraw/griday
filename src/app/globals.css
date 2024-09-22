@@ -25,3 +25,12 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Estilos globales en globals.css */
+body {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  height: 100vh; /* Altura completa de la ventana */
+  margin: 0;
+}
