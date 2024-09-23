@@ -14,12 +14,12 @@ const habits = [
     icon: <Moon className="text-white w-6 h-6" />
   },
   {
-    name: 'Trabajar',
+    name: 'Trabajar (Researcher, CEO, Software Engineer)',
     key: 'work',
     icon: <Briefcase className="text-white w-6 h-6" />
   },
   {
-    name: 'Estudiar inglés (TOEFL) 1 hora',
+    name: 'Estudiar inglés',
     key: 'study',
     icon: <Book className="text-white w-6 h-6" />
   },
@@ -57,7 +57,7 @@ export default function Home() {
       <Navbar />
 
       {/* Contenedor principal sin scrollbar */}
-      <main className="pt-16 grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+      <main className="pt-16 grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
         {habits.map(habit => (
           <HabitCalendarTracker
             key={habit.key}

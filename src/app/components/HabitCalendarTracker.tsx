@@ -7,15 +7,14 @@ const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sába
 
 interface HabitCalendarTrackerProps {
   habitName: string;
-  habitKey: string;  // Clave única para este hábito
-  icon: React.ReactNode; // El ícono del hábito
+  habitKey: string;
+  icon: React.ReactNode;
 }
 
 export default function HabitCalendarTracker({ habitName, habitKey, icon }: HabitCalendarTrackerProps) {
   const [completedDays, setCompletedDays] = useState<{ [key: string]: number[] }>({});
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  // Cargar días completados desde localStorage para este hábito en particular
   useEffect(() => {
     const storedDays = localStorage.getItem(`completedDays-${habitKey}`);
     if (storedDays) {
@@ -23,7 +22,6 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
     }
   }, [habitKey]);
 
-  // Guardar días completados en localStorage para este hábito
   useEffect(() => {
     localStorage.setItem(`completedDays-${habitKey}`, JSON.stringify(completedDays));
   }, [completedDays, habitKey]);
@@ -60,31 +58,31 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
   const key = `${currentMonth.getFullYear()}-${currentMonth.getMonth() + 1}`;
 
   return (
-    <div className="bg-gray-900 p-6 rounded-3xl max-w-xl mx-auto mb-8">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center space-x-3">
-          <div className="bg-gray-800 p-2 rounded-2xl">
+    <div className="bg-gray-900 p-4 rounded-xl max-w-md mx-auto mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center space-x-2">
+          <div className="bg-gray-800 p-1 rounded-xl">
             {icon}
           </div>
           <div>
-            <h2 className="text-white text-lg font-semibold">{habitName}</h2>
-            <p className="text-gray-400 text-sm">
+            <h2 className="text-white text-sm font-semibold">{habitName}</h2>
+            <p className="text-gray-400 text-xs">
               {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
             </p>
           </div>
         </div>
         <div className="flex space-x-2">
-          <button onClick={prevMonth} className="bg-gray-800 p-2 rounded-2xl hover:bg-gray-700 transition-colors">
-            <ChevronLeft className="text-white w-6 h-6" />
+          <button onClick={prevMonth} className="bg-gray-800 p-1 rounded-xl hover:bg-gray-700 transition-colors">
+            <ChevronLeft className="text-white w-4 h-4" />
           </button>
-          <button onClick={nextMonth} className="bg-gray-800 p-2 rounded-2xl hover:bg-gray-700 transition-colors">
-            <ChevronRight className="text-white w-6 h-6" />
+          <button onClick={nextMonth} className="bg-gray-800 p-1 rounded-xl hover:bg-gray-700 transition-colors">
+            <ChevronRight className="text-white w-4 h-4" />
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1">
         {daysOfWeek.map(day => (
-          <div key={day} className="text-gray-400 font-medium text-center">{day}</div>
+          <div key={day} className="text-gray-400 text-xs font-medium text-center">{day}</div>
         ))}
         {Array.from({ length: (new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay() + 6) % 7 }, (_, i) => (
           <div key={`empty-${i}`} />
@@ -93,7 +91,7 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
           <button
             key={day}
             onClick={() => handleCheck(day)}
-            className={`aspect-square rounded-lg flex items-center justify-center text-sm font-medium transition-colors ${
+            className={`aspect-square rounded-md flex items-center justify-center text-xs font-medium transition-colors ${
               completedDays[key]?.includes(day) ? 'bg-green-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
           >
@@ -102,5 +100,5 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
         ))}
       </div>
     </div>
-  );  
+  );
 }
