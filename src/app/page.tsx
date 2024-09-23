@@ -1,19 +1,53 @@
 import HabitCalendarTracker from './components/HabitCalendarTracker';
-import { Dumbbell, Moon } from 'lucide-react';
+import { Dumbbell, Moon, Briefcase, Book, Sun, Coffee, Utensils, Film } from 'lucide-react'; // Importar íconos adicionales
 import Navbar from './components/Navbar';
 
 const habits = [
   {
-    name: 'Ir al gym',
+    name: 'Gym (Bryan Johnson)',
     key: 'gym',
     icon: <Dumbbell className="text-white w-6 h-6" />
   },
   {
-    name: 'Dormir bien',
+    name: 'Dormirme antes de las 10pm',
     key: 'sleep',
     icon: <Moon className="text-white w-6 h-6" />
+  },
+  {
+    name: 'Trabajar',
+    key: 'work',
+    icon: <Briefcase className="text-white w-6 h-6" />
+  },
+  {
+    name: 'Estudiar inglés (TOEFL) 1 hora',
+    key: 'study',
+    icon: <Book className="text-white w-6 h-6" />
+  },
+  {
+    name: 'No dormir en el día',
+    key: 'no-sleep-day',
+    icon: <Sun className="text-white w-6 h-6" />
+  },
+  {
+    name: 'Desayuno saludable y completo',
+    key: 'healthy-breakfast',
+    icon: <Coffee className="text-white w-6 h-6" />
+  },
+  {
+    name: 'Almuerzo saludable y completo',
+    key: 'healthy-lunch',
+    icon: <Utensils className="text-white w-6 h-6" />
+  },
+  {
+    name: 'Cena saludable y completa',
+    key: 'healthy-dinner',
+    icon: <Utensils className="text-white w-6 h-6" />
+  },
+  {
+    name: 'No pornografia',
+    key: 'no-porn',
+    icon: <Film className="text-white w-6 h-6" />
   }
-  // Puedes agregar más hábitos aquí...
 ];
 
 export default function Home() {
