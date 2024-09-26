@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
@@ -15,6 +16,9 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
   const [completedDays, setCompletedDays] = useState<{ [key: string]: number[] }>({});
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  // Cargar el sonido
+  const achievementSound = typeof Audio !== "undefined" ? new Audio('/sounds/cheer.mp3') : null;
+
   useEffect(() => {
     const storedDays = localStorage.getItem(`completedDays-${habitKey}`);
     if (storedDays) {
@@ -26,9 +30,11 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
     localStorage.setItem(`completedDays-${habitKey}`, JSON.stringify(completedDays));
   }, [completedDays, habitKey]);
 
-  const handleCheck = (day: number) => {
+  const handleCheck = (event: React.MouseEvent<HTMLButtonElement>, day: number) => {
     const key = `${currentMonth.getFullYear()}-${currentMonth.getMonth() + 1}`;
-    const newCompletedDays = completedDays[key]?.includes(day)
+    const isDayCompleted = completedDays[key]?.includes(day);
+    
+    const newCompletedDays = isDayCompleted
       ? completedDays[key].filter(d => d !== day)
       : [...(completedDays[key] || []), day];
 
@@ -36,6 +42,24 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
       ...completedDays,
       [key]: newCompletedDays,
     });
+
+    // Lanza confetti en la posición donde se hizo clic
+    if (!isDayCompleted) {
+      const { clientX, clientY } = event;
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: {
+          x: clientX / window.innerWidth,
+          y: clientY / window.innerHeight,
+        }
+      });
+
+      // Reproduce el sonido de logro
+      if (achievementSound) {
+        achievementSound.play();
+      }
+    }
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -90,7 +114,7 @@ export default function HabitCalendarTracker({ habitName, habitKey, icon }: Habi
         {days.map(day => (
           <button
             key={day}
-            onClick={() => handleCheck(day)}
+            onClick={(event) => handleCheck(event, day)}
             className={`aspect-square rounded-md flex items-center justify-center text-xs font-medium transition-colors ${
               completedDays[key]?.includes(day) ? 'bg-green-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
